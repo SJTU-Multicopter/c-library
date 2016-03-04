@@ -5757,36 +5757,40 @@ static void mavlink_test_laser_distance(uint8_t system_id, uint8_t component_id,
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 }
 
-static void mavlink_test_field_size(uint8_t system_id, uint8_t component_id, mavlink_message_t *last_msg)
+static void mavlink_test_offboard_setpoint(uint8_t system_id, uint8_t component_id, mavlink_message_t *last_msg)
 {
 	mavlink_message_t msg;
         uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
         uint16_t i;
-	mavlink_field_size_t packet_in = {
-		17.0,45.0,73.0,41
+	mavlink_offboard_setpoint_t packet_in = {
+		17.0,45.0,73.0,101.0,129.0,157.0,77,144
     };
-	mavlink_field_size_t packet1, packet2;
+	mavlink_offboard_setpoint_t packet1, packet2;
         memset(&packet1, 0, sizeof(packet1));
-        	packet1.length = packet_in.length;
-        	packet1.width = packet_in.width;
-        	packet1.height = packet_in.height;
-        	packet1.times = packet_in.times;
+        	packet1.px_1 = packet_in.px_1;
+        	packet1.py_1 = packet_in.py_1;
+        	packet1.ph_1 = packet_in.ph_1;
+        	packet1.px_2 = packet_in.px_2;
+        	packet1.py_2 = packet_in.py_2;
+        	packet1.ph_2 = packet_in.ph_2;
+        	packet1.seq = packet_in.seq;
+        	packet1.total = packet_in.total;
         
         
 
         memset(&packet2, 0, sizeof(packet2));
-	mavlink_msg_field_size_encode(system_id, component_id, &msg, &packet1);
-	mavlink_msg_field_size_decode(&msg, &packet2);
+	mavlink_msg_offboard_setpoint_encode(system_id, component_id, &msg, &packet1);
+	mavlink_msg_offboard_setpoint_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
         memset(&packet2, 0, sizeof(packet2));
-	mavlink_msg_field_size_pack(system_id, component_id, &msg , packet1.length , packet1.width , packet1.height , packet1.times );
-	mavlink_msg_field_size_decode(&msg, &packet2);
+	mavlink_msg_offboard_setpoint_pack(system_id, component_id, &msg , packet1.seq , packet1.total , packet1.px_1 , packet1.py_1 , packet1.ph_1 , packet1.px_2 , packet1.py_2 , packet1.ph_2 );
+	mavlink_msg_offboard_setpoint_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
         memset(&packet2, 0, sizeof(packet2));
-	mavlink_msg_field_size_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg , packet1.length , packet1.width , packet1.height , packet1.times );
-	mavlink_msg_field_size_decode(&msg, &packet2);
+	mavlink_msg_offboard_setpoint_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg , packet1.seq , packet1.total , packet1.px_1 , packet1.py_1 , packet1.ph_1 , packet1.px_2 , packet1.py_2 , packet1.ph_2 );
+	mavlink_msg_offboard_setpoint_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
         memset(&packet2, 0, sizeof(packet2));
@@ -5794,46 +5798,49 @@ static void mavlink_test_field_size(uint8_t system_id, uint8_t component_id, mav
         for (i=0; i<mavlink_msg_get_send_buffer_length(&msg); i++) {
         	comm_send_ch(MAVLINK_COMM_0, buffer[i]);
         }
-	mavlink_msg_field_size_decode(last_msg, &packet2);
+	mavlink_msg_offboard_setpoint_decode(last_msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
         
         memset(&packet2, 0, sizeof(packet2));
-	mavlink_msg_field_size_send(MAVLINK_COMM_1 , packet1.length , packet1.width , packet1.height , packet1.times );
-	mavlink_msg_field_size_decode(last_msg, &packet2);
+	mavlink_msg_offboard_setpoint_send(MAVLINK_COMM_1 , packet1.seq , packet1.total , packet1.px_1 , packet1.py_1 , packet1.ph_1 , packet1.px_2 , packet1.py_2 , packet1.ph_2 );
+	mavlink_msg_offboard_setpoint_decode(last_msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 }
 
-static void mavlink_test_field_size_confirm(uint8_t system_id, uint8_t component_id, mavlink_message_t *last_msg)
+static void mavlink_test_offboard_setpoint_confirm(uint8_t system_id, uint8_t component_id, mavlink_message_t *last_msg)
 {
 	mavlink_message_t msg;
         uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
         uint16_t i;
-	mavlink_field_size_confirm_t packet_in = {
-		17.0,45.0,73.0,41,108
+	mavlink_offboard_setpoint_confirm_t packet_in = {
+		17.0,45.0,73.0,101.0,129.0,157.0,77,144
     };
-	mavlink_field_size_confirm_t packet1, packet2;
+	mavlink_offboard_setpoint_confirm_t packet1, packet2;
         memset(&packet1, 0, sizeof(packet1));
-        	packet1.length = packet_in.length;
-        	packet1.width = packet_in.width;
-        	packet1.height = packet_in.height;
-        	packet1.times = packet_in.times;
-        	packet1.confirm = packet_in.confirm;
+        	packet1.px_1 = packet_in.px_1;
+        	packet1.py_1 = packet_in.py_1;
+        	packet1.ph_1 = packet_in.ph_1;
+        	packet1.px_2 = packet_in.px_2;
+        	packet1.py_2 = packet_in.py_2;
+        	packet1.ph_2 = packet_in.ph_2;
+        	packet1.seq = packet_in.seq;
+        	packet1.total = packet_in.total;
         
         
 
         memset(&packet2, 0, sizeof(packet2));
-	mavlink_msg_field_size_confirm_encode(system_id, component_id, &msg, &packet1);
-	mavlink_msg_field_size_confirm_decode(&msg, &packet2);
+	mavlink_msg_offboard_setpoint_confirm_encode(system_id, component_id, &msg, &packet1);
+	mavlink_msg_offboard_setpoint_confirm_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
         memset(&packet2, 0, sizeof(packet2));
-	mavlink_msg_field_size_confirm_pack(system_id, component_id, &msg , packet1.length , packet1.width , packet1.height , packet1.times , packet1.confirm );
-	mavlink_msg_field_size_confirm_decode(&msg, &packet2);
+	mavlink_msg_offboard_setpoint_confirm_pack(system_id, component_id, &msg , packet1.seq , packet1.total , packet1.px_1 , packet1.py_1 , packet1.ph_1 , packet1.px_2 , packet1.py_2 , packet1.ph_2 );
+	mavlink_msg_offboard_setpoint_confirm_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
         memset(&packet2, 0, sizeof(packet2));
-	mavlink_msg_field_size_confirm_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg , packet1.length , packet1.width , packet1.height , packet1.times , packet1.confirm );
-	mavlink_msg_field_size_confirm_decode(&msg, &packet2);
+	mavlink_msg_offboard_setpoint_confirm_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg , packet1.seq , packet1.total , packet1.px_1 , packet1.py_1 , packet1.ph_1 , packet1.px_2 , packet1.py_2 , packet1.ph_2 );
+	mavlink_msg_offboard_setpoint_confirm_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
         memset(&packet2, 0, sizeof(packet2));
@@ -5841,12 +5848,12 @@ static void mavlink_test_field_size_confirm(uint8_t system_id, uint8_t component
         for (i=0; i<mavlink_msg_get_send_buffer_length(&msg); i++) {
         	comm_send_ch(MAVLINK_COMM_0, buffer[i]);
         }
-	mavlink_msg_field_size_confirm_decode(last_msg, &packet2);
+	mavlink_msg_offboard_setpoint_confirm_decode(last_msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
         
         memset(&packet2, 0, sizeof(packet2));
-	mavlink_msg_field_size_confirm_send(MAVLINK_COMM_1 , packet1.length , packet1.width , packet1.height , packet1.times , packet1.confirm );
-	mavlink_msg_field_size_confirm_decode(last_msg, &packet2);
+	mavlink_msg_offboard_setpoint_confirm_send(MAVLINK_COMM_1 , packet1.seq , packet1.total , packet1.px_1 , packet1.py_1 , packet1.ph_1 , packet1.px_2 , packet1.py_2 , packet1.ph_2 );
+	mavlink_msg_offboard_setpoint_confirm_decode(last_msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 }
 
@@ -6719,8 +6726,8 @@ static void mavlink_test_common(uint8_t system_id, uint8_t component_id, mavlink
 	mavlink_test_landing_target(system_id, component_id, last_msg);
 	mavlink_test_sonar_distance(system_id, component_id, last_msg);
 	mavlink_test_laser_distance(system_id, component_id, last_msg);
-	mavlink_test_field_size(system_id, component_id, last_msg);
-	mavlink_test_field_size_confirm(system_id, component_id, last_msg);
+	mavlink_test_offboard_setpoint(system_id, component_id, last_msg);
+	mavlink_test_offboard_setpoint_confirm(system_id, component_id, last_msg);
 	mavlink_test_pump_controller(system_id, component_id, last_msg);
 	mavlink_test_pump_status(system_id, component_id, last_msg);
 	mavlink_test_extra_function(system_id, component_id, last_msg);
